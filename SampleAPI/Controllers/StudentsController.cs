@@ -11,10 +11,21 @@ namespace SampleAPI.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        [HttpGet]
-        public string Get()
+        private List<string> lstNama = new List<string>
         {
-            return "Hello Student";
+            "Erick","Adi","Budi","Amir","Dea"
+        };
+
+        [HttpGet]
+        public List<string> Get()
+        {
+            return lstNama;
+        }
+
+        [HttpGet("{id}")]
+        public string Get(int id)
+        {
+            return lstNama[id];
         }
     }
 }
