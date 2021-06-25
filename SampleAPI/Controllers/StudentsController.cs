@@ -19,6 +19,7 @@ namespace SampleAPI.Controllers
         [HttpGet]
         public List<string> Get()
         {
+
             return lstNama;
         }
 
@@ -27,5 +28,13 @@ namespace SampleAPI.Controllers
         {
             return lstNama[id];
         }
+
+        [HttpPost]
+        public void Post(string nama)
+        {
+            lstNama.Add(nama);
+        }
+
+       
     }
 }
