@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SampleAPI.Data;
 using SampleAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -12,40 +13,28 @@ namespace SampleAPI.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private List<Student> lstStudent = new List<Student>
+        private IStudent _student;
+        public StudentsController(IStudent student)
         {
-            new Student
-            {
-                ID=1,
-                FirstMidName="Erick",
-                LastName="Kurniawan",
-                EnrollmentDate = DateTime.Now
-            },
-            new Student
-            {
-                ID=2,
-                FirstMidName = "Adi",
-                LastName = "Nugroho",
-                EnrollmentDate = DateTime.Now
-            }
-        };
+            _student = student;
+        }
 
         [HttpGet]
-        public List<Student> Get()
+        public IEnumerable<Student> Get()
         {
-            return lstStudent;
+            return _student.GetAll();
         }
 
         [HttpGet("{id}")]
         public Student Get(int id)
         {
-            //var result = lstStudent.Where(s => s.ID == id).FirstOrDefault();
-            var result = (from std in lstStudent
-                          where std.ID == id
-                          select std).FirstOrDefault();
-            return result;
+            return _student.GetById(id);
         }
 
-       
+        [HttpPost]
+        public void Post([FromBody] Student student)
+        {
+            _student.Insert(student);
+        }
     }
 }

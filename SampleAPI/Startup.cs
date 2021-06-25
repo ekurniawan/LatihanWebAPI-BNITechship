@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SampleAPI.Data;
 using SampleAPI.Helpers;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace SampleAPI
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddSingleton<IGreeter, GreetingInd>();
+            services.AddSingleton<IStudent, StudentData>();
             services.AddControllers();
         }
 
