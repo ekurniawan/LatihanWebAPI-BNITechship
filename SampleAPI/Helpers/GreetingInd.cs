@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace SampleAPI.Helpers
 {
-    public class Greeter : IGreeter
+    public class GreetingInd : IGreeter
     {
         public string GetMessage()
         {
-            return "Greetings form ASP.NET Core Developer";
+            return "Salam dari ASP.NET Core Developer";
         }
     }
 }
