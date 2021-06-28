@@ -10,7 +10,7 @@ namespace SampleAPI.Data
 {
     public class StudentDataSQL : IStudent
     {
-       
+
         private IConfiguration _config;
         public StudentDataSQL(IConfiguration config)
         {
@@ -30,11 +30,11 @@ namespace SampleAPI.Data
         public IEnumerable<Student> GetAll()
         {
             List<Student> lstStudents = new List<Student>();
-            using(SqlConnection conn = new SqlConnection(GetConnStr()))
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
             {
                 string strSql = @"select * from Students 
                                   order by FirstMidName asc";
-                SqlCommand cmd = new SqlCommand(strSql,conn);
+                SqlCommand cmd = new SqlCommand(strSql, conn);
 
                 conn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -60,7 +60,36 @@ namespace SampleAPI.Data
 
         public Student GetById(string id)
         {
-            throw new NotImplementedException();
+            Student student = new Student();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"select * from Students
+                                  where ID=@ID";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@ID", id);
+                conn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    dr.Read();
+                    student = new Student
+                    {
+                        ID = Convert.ToInt32(dr["ID"]),
+                        FirstMidName = dr["FirstMidName"].ToString(),
+                        LastName = dr["LastName"].ToString(),
+                        EnrollmentDate = Convert.ToDateTime(dr["EnrollmentDate"])
+                    };
+                }
+                else
+                {
+                    throw new Exception($"Data Student ID: {id} tidak ditemukan");
+                }
+
+                dr.Close();
+                cmd.Dispose();
+                conn.Close();
+            }
+            return student;
         }
 
         public IEnumerable<Student> GetByName(string studentName)
