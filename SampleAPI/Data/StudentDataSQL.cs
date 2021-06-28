@@ -99,12 +99,74 @@ namespace SampleAPI.Data
 
         public void Insert(Student obj)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"insert into Students(LastName,FirstMidName,EnrollmentDate) 
+                                  values(@LastName,@FirstMidName,@EnrollmentDate)";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@LastName", obj.LastName);
+                cmd.Parameters.AddWithValue("@FirstMidName", obj.FirstMidName);
+                cmd.Parameters.AddWithValue("@EnrollmentDate", obj.EnrollmentDate);
+                try
+                {
+                    conn.Open();
+                    int result = cmd.ExecuteNonQuery();
+                    if (result != 1)
+                        throw new Exception("Gagal untuk menambahkan data student");
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Error: {sqlEx.InnerException.Message}");
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception($"Error: {ex.Message}");
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    conn.Close();
+                }
+            }
         }
 
         public void Update(string id, Student obj)
         {
             throw new NotImplementedException();
+        }
+
+        public int InsertWithIndentity(Student obj)
+        {
+            int result = 0;
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"insert into Students(LastName,FirstMidName,EnrollmentDate) 
+                                  values(@LastName,@FirstMidName,@EnrollmentDate);
+                                  select @@identity";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@LastName", obj.LastName);
+                cmd.Parameters.AddWithValue("@FirstMidName", obj.FirstMidName);
+                cmd.Parameters.AddWithValue("@EnrollmentDate", obj.EnrollmentDate);
+                try
+                {
+                    conn.Open();
+                    result = Convert.ToInt32(cmd.ExecuteScalar());
+                    return result;
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Error: {sqlEx.InnerException.Message}");
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error: {ex.Message}");
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    conn.Close();
+                }
+            }
         }
     }
 }

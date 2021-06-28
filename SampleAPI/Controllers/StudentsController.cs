@@ -32,9 +32,17 @@ namespace SampleAPI.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] Student student)
+        public IActionResult Post([FromBody] Student student)
         {
-            _student.Insert(student);
+            try
+            {
+                _student.Insert(student);
+                return Ok($"Berhasil menambahkan data student {student.FirstMidName} {student.LastName}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
+            }
         }
 
         [HttpPut("{id}")]

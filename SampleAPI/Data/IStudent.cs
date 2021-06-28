@@ -9,5 +9,7 @@ namespace SampleAPI.Data
     public interface IStudent : ICrud<Student>
     {
         IEnumerable<Student> GetByName(string studentName);
+
+        int InsertWithIndentity(Student obj);
     }
 }
