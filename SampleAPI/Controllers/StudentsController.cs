@@ -31,6 +31,13 @@ namespace SampleAPI.Controllers
             return _student.GetById(id.ToString());
         }
 
+        [HttpGet]
+        [Route("StudentQuery")]
+        public string StudentQuery([FromQuery] Student nama)
+        {
+            return $"{nama.FirstMidName} {nama.LastName}";
+        }
+
         [HttpPost]
         public IActionResult Post([FromBody] Student student)
         {
