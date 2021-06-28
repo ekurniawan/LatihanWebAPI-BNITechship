@@ -45,6 +45,21 @@ namespace SampleAPI.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("PostWithID")]
+        public IActionResult PostWithID([FromBody] Student student)
+        {
+            try
+            {
+                var result = _student.InsertWithIndentity(student);
+                return Ok($"Berhasil menambahkan Student ID: {result}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
+            }
+        }
+
         [HttpPut("{id}")]
         public void Put(int id,[FromBody] Student student)
         {

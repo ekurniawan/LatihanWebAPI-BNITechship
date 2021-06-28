@@ -61,6 +61,11 @@ namespace SampleAPI.Data
             lstStudent.Add(student);
         }
 
+        public int InsertWithIndentity(Student obj)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(string id, Student student)
         {
             var result = GetById(id);
