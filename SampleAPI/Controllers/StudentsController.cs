@@ -37,10 +37,16 @@ namespace SampleAPI.Controllers
             _student.Insert(student);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public void Put(int id,[FromBody] Student student)
         {
             _student.Update(id, student);
+        }
+
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            _student.Delete(id);
         }
     }
 }

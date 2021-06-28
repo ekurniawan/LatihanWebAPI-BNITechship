@@ -33,7 +33,9 @@ namespace SampleAPI.Data
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var result = GetById(id);
+            if(result!=null)
+                lstStudent.Remove(result);
         }
 
         public IEnumerable<Student> GetAll()
