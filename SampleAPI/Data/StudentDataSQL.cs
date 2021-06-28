@@ -132,7 +132,44 @@ namespace SampleAPI.Data
 
         public void Update(string id, Student obj)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"update Students set LastName=@LastName,FirstMidName=@FirstMidName,
+                                  EnrollmentDate=@EnrollmentDate where ID=@ID";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@LastName", obj.LastName);
+                cmd.Parameters.AddWithValue("@FirstMidName", obj.FirstMidName);
+                cmd.Parameters.AddWithValue("@EnrollmentDate", obj.EnrollmentDate);
+                cmd.Parameters.AddWithValue("@ID", id);
+                try
+                {
+                    var student = GetById(id);
+                    if (student != null)
+                    {
+                        conn.Open();
+                        var result = cmd.ExecuteNonQuery();
+                        if (result != 1)
+                            throw new Exception("Gagal update data");
+                    }
+                    else
+                    {
+                        throw new Exception($"Data Student ID {id} tidak ditemukan");
+                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Error: {sqlEx.InnerException.Message}");
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception($"Error: {ex.Message}");
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    conn.Close();
+                }
+            }
         }
 
         public int InsertWithIndentity(Student obj)

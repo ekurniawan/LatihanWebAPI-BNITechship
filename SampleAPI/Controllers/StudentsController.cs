@@ -61,9 +61,17 @@ namespace SampleAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Put(int id,[FromBody] Student student)
+        public IActionResult Put(int id,[FromBody] Student student)
         {
-            _student.Update(id.ToString(), student);
+            try
+            {
+                _student.Update(id.ToString(), student);
+                return Ok($"Data student id: {id} berhasil diupdate");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
