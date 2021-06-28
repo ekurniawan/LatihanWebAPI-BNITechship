@@ -56,7 +56,13 @@ namespace SampleAPI.Data
 
         public void Update(int id, Student student)
         {
-            throw new NotImplementedException();
+            var result = GetById(id);
+            if (result != null)
+            {
+                result.FirstMidName = student.FirstMidName;
+                result.LastName = student.LastName;
+                result.EnrollmentDate = student.EnrollmentDate;
+            }
         }
     }
 }
