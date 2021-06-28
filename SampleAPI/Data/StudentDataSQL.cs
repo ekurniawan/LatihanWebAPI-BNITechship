@@ -24,7 +24,36 @@ namespace SampleAPI.Data
 
         public void Delete(string id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"delete from Students where ID=@ID";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@ID", id);
+                try
+                {
+                    var student = GetById(id);
+                    if (student != null)
+                    {
+                        conn.Open();
+                        var result = cmd.ExecuteNonQuery();
+                        if (result != 1)
+                            throw new Exception("Gagal delete data student");
+                    }
+                    else
+                    {
+                        throw new Exception($"Data student id: {id} tidak ditemukan");
+                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception(sqlEx.InnerException.Message);
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    conn.Close();
+                }
+            }
         }
 
         public IEnumerable<Student> GetAll()

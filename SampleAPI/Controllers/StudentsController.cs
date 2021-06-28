@@ -75,9 +75,18 @@ namespace SampleAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            _student.Delete(id.ToString());
+            try
+            {
+                _student.Delete(id.ToString());
+                return Ok($"Data student id:{id} berhasil didelete");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
     }
 }
