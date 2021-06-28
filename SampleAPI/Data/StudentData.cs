@@ -51,6 +51,11 @@ namespace SampleAPI.Data
             return result;
         }
 
+        public IEnumerable<Student> GetByName(string studentName)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Insert(Student student)
         {
             lstStudent.Add(student);
