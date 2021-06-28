@@ -123,7 +123,35 @@ namespace SampleAPI.Data
 
         public IEnumerable<Student> GetByName(string studentName)
         {
-            throw new NotImplementedException();
+            List<Student> lstStudents = new List<Student>();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"select * from Students where FirstMidName like @FirstMidName 
+                                  OR LastName like @LastName order by FirstMidName asc";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@FirstMidName", "%" + studentName + "%");
+                cmd.Parameters.AddWithValue("@LastName", "%" + studentName + "%");
+                conn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        lstStudents.Add(new Student
+                        {
+                            ID = Convert.ToInt32(dr["ID"]),
+                            FirstMidName = dr["FirstMidName"].ToString(),
+                            LastName = dr["LastName"].ToString(),
+                            EnrollmentDate = Convert.ToDateTime(dr["EnrollmentDate"])
+                        });
+                    }
+                }
+                dr.Close();
+                cmd.Dispose();
+                conn.Close();
+
+                return lstStudents;
+            }
         }
 
         public void Insert(Student obj)

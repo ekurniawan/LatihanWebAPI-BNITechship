@@ -32,6 +32,13 @@ namespace SampleAPI.Controllers
         }
 
         [HttpGet]
+        [Route("StudentByName/{name}")]
+        public IEnumerable<Student> StudentByName(string name)
+        {
+            return _student.GetByName(name);
+        }
+
+        [HttpGet]
         [Route("StudentQuery")]
         public string StudentQuery([FromQuery] Student nama)
         {
