@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace SampleAPI.Data
 {
-    public interface IStudent
+    public interface IStudent : ICrud<Student>
     {
-        IEnumerable<Student> GetAll();
-        Student GetById(int id);
-        void Insert(Student student);
-        void Update(int id, Student student);
-        void Delete(int id);
+        
     }
 }

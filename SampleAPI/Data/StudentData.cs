@@ -31,7 +31,7 @@ namespace SampleAPI.Data
             };
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             var result = GetById(id);
             if(result!=null)
@@ -43,10 +43,10 @@ namespace SampleAPI.Data
             return lstStudent;
         }
 
-        public Student GetById(int id)
+        public Student GetById(string id)
         {
             var result = (from std in lstStudent
-                          where std.ID == id
+                          where std.ID == Convert.ToInt32(id)
                           select std).FirstOrDefault();
             return result;
         }
@@ -56,7 +56,7 @@ namespace SampleAPI.Data
             lstStudent.Add(student);
         }
 
-        public void Update(int id, Student student)
+        public void Update(string id, Student student)
         {
             var result = GetById(id);
             if (result != null)
