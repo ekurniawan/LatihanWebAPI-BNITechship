@@ -28,7 +28,7 @@ namespace SampleAPI.Controllers
         [HttpGet("{id}")]
         public Student Get(int id)
         {
-            return _student.GetById(id);
+            return _student.GetById(id.ToString());
         }
 
         [HttpPost]
@@ -40,13 +40,13 @@ namespace SampleAPI.Controllers
         [HttpPut("{id}")]
         public void Put(int id,[FromBody] Student student)
         {
-            _student.Update(id, student);
+            _student.Update(id.ToString(), student);
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _student.Delete(id);
+            _student.Delete(id.ToString());
         }
     }
 }
