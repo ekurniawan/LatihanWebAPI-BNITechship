@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace SampleAPI.Data
 {
@@ -29,7 +29,33 @@ namespace SampleAPI.Data
 
         public IEnumerable<Student> GetAll()
         {
-            throw new NotImplementedException();
+            List<Student> lstStudents = new List<Student>();
+            using(SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"select * from Students 
+                                  order by FirstMidName asc";
+                SqlCommand cmd = new SqlCommand(strSql,conn);
+
+                conn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        lstStudents.Add(new Student
+                        {
+                            ID = Convert.ToInt32(dr["ID"]),
+                            FirstMidName = dr["FirstMidName"].ToString(),
+                            LastName = dr["LastName"].ToString(),
+                            EnrollmentDate = Convert.ToDateTime(dr["EnrollmentDate"])
+                        });
+                    }
+                }
+                dr.Close();
+                cmd.Dispose();
+                conn.Close();
+            }
+            return lstStudents;
         }
 
         public Student GetById(string id)

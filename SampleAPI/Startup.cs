@@ -20,7 +20,7 @@ namespace SampleAPI
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddSingleton<IGreeter, GreetingInd>();
-            services.AddSingleton<IStudent, StudentData>();
+            services.AddSingleton<IStudent, StudentDataSQL>();
             services.AddControllers();
         }
 
